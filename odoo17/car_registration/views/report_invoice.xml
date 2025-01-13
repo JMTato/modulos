@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="report_sale_order_custom" inherit_id="sale.report_saleorder_document">
-        <xpath expr="//div[@class='page']" position="before">
+    <template id="report_invoice_vehicle_info" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@class='mt-5 clearfix']" position="before">
             <div class="row mt16 mb16">
                 <div class="col-4">
-                    <t t-if="doc.vehicle_id">
+                    <t t-if="o.vehicle_id">
                         <strong>Vehículo:</strong>
-                        <span t-field="doc.vehicle_id.name"/>
+                        <span t-field="o.vehicle_id.name"/>
                     </t>
                 </div>
                 <div class="col-4">
-                    <t t-if="doc.vehicle_license_plate">
+                    <t t-if="o.vehicle_license_plate">
                         <strong>Matrícula:</strong>
-                        <span t-field="doc.vehicle_license_plate"/>
+                        <span t-field="o.vehicle_license_plate"/>
                     </t>
                 </div>
                 <div class="col-4">
-                    <t t-if="doc.vehicle_kilometers">
+                    <t t-if="o.vehicle_kilometers">
                         <strong>Kilómetros:</strong>
-                        <span t-field="doc.vehicle_kilometers"/>
+                        <span t-field="o.vehicle_kilometers"/>
                     </t>
                 </div>
             </div>
