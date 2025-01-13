@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_sale_order_custom" inherit_id="sale.portal_order_page">
+        <xpath expr="//div[@id='order_lines']" position="before">
+            <div class="mt16 mb16">
+                <h4 class="text-primary">Detalles del Vehículo</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <strong>Vehículo:</strong> 
+                        <span t-if="order.vehicle_id">
+                            <t t-field="order.vehicle_id.name"/>
+                        </span>
+                        <t t-else="">N/A</t>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Matrícula:</strong> 
+                        <span t-if="order.vehicle_license_plate">
+                            <t t-field="order.vehicle_license_plate"/>
+                        </span>
+                        <t t-else="">N/A</t>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Kilómetros:</strong> 
+                        <span t-if="order.vehicle_kilometers">
+                            <t t-field="order.vehicle_kilometers"/>
+                        </span>
+                        <t t-else="">0</t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

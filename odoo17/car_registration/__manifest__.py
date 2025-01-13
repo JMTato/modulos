@@ -11,6 +11,7 @@
         "views/sale_order_views.xml",
         "views/res_partner_views.xml",
         "views/report_saleorder.xml",
+        "views/portal_sale_order.xml",
     ],
     "installable": True,
     "application": False,
