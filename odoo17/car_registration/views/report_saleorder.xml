@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_sale_order_custom" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@class='page']" position="before">
+            <div class="row mt16 mb16">
+                <div class="col-4">
+                    <strong>Vehículo:</strong>
+                    <t t-if="doc.vehicle_id">
+                        <span t-field="doc.vehicle_id.name"/>
+                    </t>
+                    <t t-else="">
+                        <span>N/A</span>
+                    </t>
+                </div>
+                <div class="col-4">
+                    <strong>Matrícula:</strong>
+                    <t t-if="doc.vehicle_license_plate">
+                        <span t-field="doc.vehicle_license_plate"/>
+                    </t>
+                    <t t-else="">
+                        <span>N/A</span>
+                    </t>
+                </div>
+                <div class="col-4">
+                    <strong>Kilómetros:</strong>
+                    <t t-if="doc.vehicle_kilometers">
+                        <span t-field="doc.vehicle_kilometers"/>
+                    </t>
+                    <t t-else="">
+                        <span>0</span>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
