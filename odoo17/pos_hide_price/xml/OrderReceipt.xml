@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template">
+    <!-- Ocultar precios en las líneas del recibo -->
+    <t t-inherit="point_of_sale.OrderLinesReceipt" t-inherit-mode="extension">
+        <!-- Precio simple -->
+        <xpath expr="//t[@t-if='isSimple(line)']/div/span" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <!-- Descuentos extendidos -->
+        <xpath expr="//t[@t-else='']/t[@t-if]/div" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+        <xpath expr="//t[@t-elif='line.discount !== 0']/*" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if='line.discount !== 0']/*" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <!-- Cantidad x precio -->
+        <xpath expr="//t[@t-else='']/div[last()]" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+        <xpath expr="//t[@t-else='']/div[last()]" position="after">
+            <t t-if="priceHidden">
+                <div class="pos-receipt-left-padding">
+                    x
+                    <t t-esc="round(line.quantity, env.pos.dp['Product Unit of Measure'])"/>
+                    <t t-if="not line.is_in_unit" t-esc="line.unit_name"/>
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+    <!-- Ocultar precios en el resumen del recibo -->
+    <t t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+        <!-- Impuestos -->
+        <xpath expr="//t[@t-if='not isTaxIncluded']/div[1]" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if='not isTaxIncluded']/div[2]" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if='not isTaxIncluded']/t/div" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <!-- Separador -->
+        <xpath expr="//div[3]" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <!-- Total -->
+        <xpath expr="//div[contains(@class, 'pos-receipt-amount')]" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if='receipt.total_rounded != receipt.total_with_tax']/div[1]" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if='receipt.total_rounded != receipt.total_with_tax']/div[2]" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <!-- Pagos -->
+        <xpath expr="//t[@t-foreach='receipt.paymentlines']/*" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <!-- Cambio -->
+        <xpath expr="//div[contains(@class, 'receipt-change')]" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <!-- Descuento total -->
+        <xpath expr="//t[@t-if='receipt.total_discount']/div" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <!-- Impuestos totales -->
+        <xpath expr="//t[@t-foreach='receipt.tax_details']/div" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <xpath expr="//t[@t-if='isTaxIncluded']/t[@t-foreach]/div" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <xpath expr="//t[@t-if='isTaxIncluded']/div" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+
+        <xpath expr="//t[@t-if='isTaxIncluded']/t[@t-foreach]/div" position="attributes">
+            <attribute name="t-att-class">'oe_hidden' if priceHidden else ''</attribute>
+        </xpath>
+    </t>
+</templates>
