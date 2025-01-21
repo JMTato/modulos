@@ -20,7 +20,6 @@
         'views/garantias_menus.xml',
         'views/garantias_views.xml',
         'views/garantias_map_views.xml',
-        'views/garantias_settings_views.xml',
     ],
     'assets': {
         'web.assets_backend': [
