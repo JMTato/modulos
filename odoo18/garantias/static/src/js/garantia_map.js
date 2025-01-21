@@ -1,4 +1,4 @@
-odoo.define('garantias.MapView', function (require) {
+odoo.define('garantias.garantia_map', function (require) {
     "use strict";
 
     const AbstractAction = require('web.AbstractAction');
@@ -6,14 +6,11 @@ odoo.define('garantias.MapView', function (require) {
     const rpc = require('web.rpc');
 
     const GarantiasMapView = AbstractAction.extend({
-        /**
-         * Este método se llama cuando se abre la acción 'garantias_map_view'.
-         */
         start: function () {
-            // 1) Crear contenedor HTML para el mapa
+            // Crear contenedor HTML para el mapa
             this.$el.append("<div id='garantias_map' style='width:100%; height:600px;'></div>");
 
-            // 2) Obtener la clave de Google Maps desde el servidor Odoo
+            // Obtener la clave de Google Maps desde el servidor Odoo
             return rpc.query({
                 route: '/garantias/get_api_key',
             }).then((data) => {
@@ -23,7 +20,7 @@ odoo.define('garantias.MapView', function (require) {
                     return;
                 }
 
-                // 3) Cargar el script de Google Maps dinámicamente
+                // Cargar el script de Google Maps dinámicamente
                 let script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&callback=initGarantiasMap`;
                 document.head.appendChild(script);
@@ -33,14 +30,13 @@ odoo.define('garantias.MapView', function (require) {
         },
     });
 
-    // Función de inicialización del mapa
     window.initGarantiasMap = function () {
         rpc.query({
             model: 'res.company',
             method: 'get_parent_company_location',
             args: [],
         }).then((companyLocation) => {
-            const center = companyLocation && companyLocation.lat && companyLocation.lng
+            const center = companyLocation?.lat && companyLocation?.lng
                 ? { lat: companyLocation.lat, lng: companyLocation.lng }
                 : { lat: 40.416775, lng: -3.703790 };  // Madrid por defecto
 
@@ -49,7 +45,7 @@ odoo.define('garantias.MapView', function (require) {
                 center: center,
             });
 
-            // Obtener las coordenadas de las garantías registradas
+            // Obtener coordenadas de las garantías registradas
             return rpc.query({
                 model: 'garantias',
                 method: 'search_read',

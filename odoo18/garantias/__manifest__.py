@@ -16,14 +16,13 @@
     'data': [
         'security/ir.model.access.csv',
         'data/sequence_data.xml',
-        'views/garantias_assets.xml',
         'views/garantias_menus.xml',
         'views/garantias_views.xml',
         'views/garantias_map_views.xml',
     ],
     'assets': {
         'web.assets_backend': [
-            'garantias/static/src/js/garantias_map.js',
+            'garantias/static/src/js/garantia_map.js',
         ],
     },
     'installable': True,
