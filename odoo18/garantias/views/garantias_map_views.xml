@@ -1,0 +1,14 @@
+<odoo>
+    <!-- Acción de tipo Client para mostrar el mapa -->
+    <record id="action_garantias_map" model="ir.actions.client">
+        <field name="name">Mapa de Garantías</field>
+        <field name="tag">garantias_map_view</field>
+    </record>
+
+    <!-- Menú secundario dentro de Garantías -->
+    <menuitem id="menu_garantias_map"
+              name="Mapa de Garantías"
+              parent="menu_garantias_root"
+              action="action_garantias_map"
+              sequence="30" />
+</odoo>

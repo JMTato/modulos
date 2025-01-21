@@ -1,0 +1,11 @@
+<!-- data/sequence_data.xml -->
+<odoo>
+    <data noupdate="1">
+        <record id="seq_garantias_reference" model="ir.sequence">
+            <field name="name">Secuencia Garantías</field>
+            <field name="code">garantias.reference</field>
+            <field name="prefix">GAR</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>

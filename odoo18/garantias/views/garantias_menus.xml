@@ -1,0 +1,19 @@
+<odoo>
+    <menuitem id="menu_garantias_root"
+              name="Garantías"
+              sequence="15"
+              />
+    
+    <record id="action_garantias" model="ir.actions.act_window">
+        <field name="name">Garantías</field>
+        <field name="res_model">garantias</field>
+        <!-- Ajusta 'view_mode' a list,form o form,list (según tu versión) -->
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_garantias_submenu"
+              name="Registro de Garantías"
+              parent="menu_garantias_root"
+              action="action_garantias"
+              sequence="20"/>
+</odoo>

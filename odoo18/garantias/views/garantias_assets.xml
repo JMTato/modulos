@@ -1,0 +1,13 @@
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend" name="Garantías Assets">
+        <xpath expr="." position="inside">
+            <!-- Carga la librería de Google Maps (si no la usas en otro lado) -->
+            <script type="text/javascript"
+                    src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY">
+            </script>
+
+            <!-- Carga tu script -->
+            <script type="text/javascript" src="/garantias/static/src/js/garantias_map.js"/>
+        </xpath>
+    </template>
+</odoo>

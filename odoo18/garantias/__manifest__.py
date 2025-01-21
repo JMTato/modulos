@@ -1,16 +1,32 @@
+# __manifest__.py
 {
-    'name': 'Gestión de Garantías',
+    'name': 'Garantías',
     'version': '1.0',
-    'summary': 'Registro de garantías de equipos instalados',
     'category': 'Custom',
+    'summary': 'Gestión de garantías de equipos',
+    'description': """
+    Módulo para registrar las garantías de los equipos instalados por técnicos.
+    """,
     'author': 'North Atlantic Consulting LLC',
     'website': 'https://atlanticonorteconsultores.com',
-    'depends': ['base', 'contacts'],
+    'depends': [
+        'base',
+        # Si necesitas otros módulos de Odoo, agrégalos aquí
+    ],
     'data': [
         'security/ir.model.access.csv',
-        'data/sequences.xml',
-        'views/garantias_view.xml',
+        'data/sequence_data.xml',
+        'views/garantias_assets.xml',
+        'views/garantias_menus.xml',
+        'views/garantias_views.xml',
+        'views/garantias_map_views.xml',
+        'views/garantias_settings_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'garantias/static/src/js/garantias_map.js',
+        ],
+    },
     'installable': True,
     'application': True,
 }
