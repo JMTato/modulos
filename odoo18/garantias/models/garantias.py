@@ -125,8 +125,8 @@ class Garantias(models.Model):
         return (0.0, 0.0)
 
     def _get_google_maps_api_key(self):
-        """Obtiene la clave API de Google Maps desde la configuración de Odoo."""
-        return self.env['ir.config_parameter'].sudo().get_param('garantias.google_maps_api_key', default='')
+        """Obtiene la clave API de Google Maps desde la configuración estándar de Odoo."""
+        return self.env['ir.config_parameter'].sudo().get_param('google_maps_api_key', default='')
 
     # ----------------------------------------
     # Sobreescritura de métodos de creación/modificación
