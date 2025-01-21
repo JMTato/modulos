@@ -11,6 +11,7 @@
     'website': 'https://atlanticonorteconsultores.com',
     'depends': [
         'base',
+        'web',
         # Si necesitas otros módulos de Odoo, agrégalos aquí
     ],
     'data': [
