@@ -25,6 +25,9 @@
         'web.assets_backend': [
             'garantias/static/src/js/garantia_map.js',
         ],
+        'web.assets_qweb': [
+            'garantias/static/src/xml/*.xml',
+        ],
     },
     'installable': True,
     'application': True,
