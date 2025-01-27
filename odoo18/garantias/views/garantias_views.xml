@@ -1,42 +1,59 @@
 <odoo>
+    <!-- Vista de formulario mejorada -->
     <record id="view_garantias_form" model="ir.ui.view">
         <field name="name">garantias.form</field>
         <field name="model">garantias</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form string="Garantías">
+            <form string="Garantías" class="o_form_view">
                 <sheet>
                     <group>
-                        <field name="name" readonly="1"/>
-                        <field name="fecha_registro" readonly="1"/>
-                        <field name="company_id" readonly="1"/>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="fecha_registro" readonly="1"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="cliente_nombre"/>
+                            <field name="nif"/>
+                            <field name="movil"/>
+                        </group>
                     </group>
-                    <group>
-                        <field name="cliente_nombre"/>
-                        <field name="nif"/>
-                        <field name="movil"/>
-                    </group>
-                    <group>
-                        <field name="calle"/>
-                        <field name="numero"/>
-                        <field name="ciudad"/>
-                        <field name="cp"/>
-                        <field name="country_id"/>
-                    </group>
-                    <group>
-                        <field name="ubicacion" readonly="1"/>
-                    </group>
-                    <group>
-                        <field name="barcode"/>
-                    </group>
-                    <group>
-                        <field name="imagen_equipo" widget="image"/>
-                    </group>
+
+                    <notebook>
+                        <page string="Dirección">
+                            <group>
+                                <field name="calle"/>
+                                <field name="ciudad"/>
+                                <field name="cp"/>
+                                <field name="country_id"/>
+                            </group>
+                            <group>
+                                <field name="ubicacion" readonly="1"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Ubicación Geográfica">
+                            <group>
+                                <field name="latitude" />
+                                <field name="longitude" />
+                                <button name="action_geo_localize" type="object" string="Obtener Ubicación" class="oe_highlight"/>
+                            </group>
+                        </page>
+
+                        <page string="Información Adicional">
+                            <group>
+                                <field name="barcode"/>
+                                <field name="imagen_equipo" widget="image"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
+    <!-- Vista de lista -->
     <record id="view_garantias_list" model="ir.ui.view">
         <field name="name">garantias.list</field>
         <field name="model">garantias</field>
@@ -53,6 +70,17 @@
         </field>
     </record>
 
-    <!-- Podrías agregar también una vista kanban, search, etc. si lo deseas -->
-
+    <!-- Vista de búsqueda -->
+    <record id="view_garantias_search" model="ir.ui.view">
+        <field name="name">garantias.search</field>
+        <field name="model">garantias</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Garantías">
+                <field name="name"/>
+                <field name="cliente_nombre"/>
+                <field name="nif"/>
+            </search>
+        </field>
+    </record>
 </odoo>

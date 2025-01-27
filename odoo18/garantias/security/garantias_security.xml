@@ -1,0 +1,23 @@
+<odoo>
+    <!-- Categoría de seguridad -->
+    <record id="garantias_category" model="ir.module.category">
+        <field name="name">Garantías</field>
+        <field name="description">Gestión de garantías de equipos instalados</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Grupo: Usuarios de Garantías -->
+    <record id="group_garantias_user" model="res.groups">
+        <field name="name">Usuarios de Garantías</field>
+        <field name="category_id" ref="garantias_category"/>
+        <field name="comment">Usuarios que pueden ver y gestionar garantías.</field>
+    </record>
+
+    <!-- Grupo: Gerentes de Garantías -->
+    <record id="group_garantias_manager" model="res.groups">
+        <field name="name">Gerentes de Garantías</field>
+        <field name="category_id" ref="garantias_category"/>
+        <field name="comment">Gerentes con acceso total a las garantías.</field>
+        <field name="implied_ids" eval="[(4, ref('group_garantias_user'))]"/>
+    </record>
+</odoo>

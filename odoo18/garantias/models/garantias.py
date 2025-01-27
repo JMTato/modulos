@@ -1,16 +1,13 @@
-# models/garantias.py
+import logging
+from odoo import api, fields, models, _
 import requests
-from odoo import api, fields, models
+
+_logger = logging.getLogger(__name__)
 
 class Garantias(models.Model):
     _name = 'garantias'
     _description = 'Registro de Garantías'
 
-    # ----------------------------------------
-    # Definición de campos del modelo
-    # ----------------------------------------
-
-    # Campo de referencia: se obtiene mediante una secuencia al crear el registro
     name = fields.Char(
         string='Referencia',
         required=True,
@@ -19,144 +16,103 @@ class Garantias(models.Model):
         default=lambda self: self.env['ir.sequence'].next_by_code('garantias.reference')
     )
 
-    # Datos del cliente
     cliente_nombre = fields.Char(string='Nombre completo', required=True)
     nif = fields.Char(string='NIF')
     movil = fields.Char(string='Móvil')
 
-    # Dirección
     calle = fields.Char(string='Calle')
-    numero = fields.Integer(string='Número')
     ciudad = fields.Char(string='Ciudad')
     cp = fields.Char(string='C.P.')
-    
-    # País (relación con res.country para desplegable de países)
     country_id = fields.Many2one('res.country', string='País')
 
-    # Compañía asociada al usuario que crea el registro (readonly)
-    company_id = fields.Many2one(
-        'res.company',
-        string='Compañía',
-        default=lambda self: self.env.company,
-        readonly=True
-    )
+    latitude = fields.Float(string='Latitud', digits=(16, 5))
+    longitude = fields.Float(string='Longitud', digits=(16, 5))
 
-    # Fecha de registro: se llena automáticamente con la fecha actual
-    fecha_registro = fields.Date(
-        string='Fecha',
-        default=fields.Date.context_today,
-        readonly=True
-    )
-
-    # Campo calculado para almacenar la ubicación concatenada
     ubicacion = fields.Char(
         string='Ubicación',
         compute='_compute_ubicacion',
         store=True
     )
 
-    # Campos de geolocalización (latitud y longitud)
-    latitude = fields.Float(string='Latitud')
-    longitude = fields.Float(string='Longitud')
+    fecha_registro = fields.Date(
+        string='Fecha de Registro', 
+        default=fields.Date.context_today
+    )
 
-    # Código de barras del equipo
-    barcode = fields.Char(string='Código de barras')
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compañía',
+        default=lambda self: self.env.company
+    )
 
-    # Foto del equipo (almacenada en formato binario)
-    imagen_equipo = fields.Image(string='Foto del equipo')
+    barcode = fields.Char(string='Código de Barras')
+    imagen_equipo = fields.Image(string='Foto del Equipo')
 
-    # ----------------------------------------
-    # Métodos del modelo
-    # ----------------------------------------
-
-    @api.depends('calle', 'numero', 'ciudad', 'cp', 'country_id')
+    @api.depends('calle', 'ciudad', 'cp', 'country_id')
     def _compute_ubicacion(self):
         """Calcula la ubicación concatenando los campos de dirección."""
         for record in self:
-            parts = []
-            if record.calle:
-                parts.append(record.calle)
-            if record.numero:
-                parts.append(str(record.numero))
-            if record.ciudad:
-                parts.append(record.ciudad)
-            if record.cp:
-                parts.append(record.cp)
-            if record.country_id:
-                parts.append(record.country_id.name)
+            parts = [
+                record.calle or '',
+                record.ciudad or '',
+                record.cp or '',
+                record.country_id.name or ''
+            ]
+            record.ubicacion = ', '.join(filter(None, parts))
 
-            record.ubicacion = ', '.join(parts)
+    def geo_localize(self):
+        """Obtiene la latitud y longitud usando la API de geolocalización de Google."""
+        for record in self:
+            if record.ubicacion:
+                try:
+                    # Obtener la clave de API de Google desde la configuración correcta
+                    api_key = self.env['ir.config_parameter'].sudo().get_param('base_geolocalize.google_map_api_key')
 
-    # ----------------------------------------
-    # Métodos para la geolocalización
-    # ----------------------------------------
+                    if not api_key:
+                        _logger.error("No se ha configurado la clave de API de Google Maps en ir.config_parameter.")
+                        continue
 
-    def _google_geocode(self, address):
-        """Devuelve (lat, lng) usando la API de geocodificación de Google."""
-        if not address:
-            return (0.0, 0.0)
+                    # Llamada a la API de Google Maps para geolocalizar la dirección
+                    url = f"https://maps.googleapis.com/maps/api/geocode/json?address={record.ubicacion}&key={api_key}"
+                    response = requests.get(url)
+                    result = response.json()
 
-        api_key = self._get_google_maps_api_key()
-        if not api_key:
-            # Si la clave de API no está configurada, retorna coordenadas vacías
-            return (0.0, 0.0)
+                    if result.get('status') == 'OK':
+                        location = result['results'][0]['geometry']['location']
+                        record.latitude = location['lat']
+                        record.longitude = location['lng']
+                        _logger.info(f"Geolocalización exitosa: Lat {record.latitude}, Lon {record.longitude}")
+                    else:
+                        _logger.warning(f"No se pudieron obtener coordenadas para: {record.ubicacion}")
+                        record.latitude = 0.0
+                        record.longitude = 0.0
 
-        # URL de la API de geocodificación de Google Maps
-        url = 'https://maps.googleapis.com/maps/api/geocode/json'
-        params = {
-            'address': address,
-            'key': api_key
-        }
-        try:
-            # Realizar la solicitud HTTP a la API de Google Maps
-            resp = requests.get(url, params=params, timeout=5)
-            if resp.status_code == 200:
-                data = resp.json()
-                if data.get('status') == 'OK':
-                    # Obtener latitud y longitud del primer resultado encontrado
-                    results = data.get('results', [])
-                    if results:
-                        location = results[0]['geometry']['location']
-                        return (location['lat'], location['lng'])
-        except Exception as e:
-            # Manejar errores de conexión u otros problemas
-            pass
-
-        return (0.0, 0.0)
-
-    def _get_google_maps_api_key(self):
-        """Obtiene la clave API de Google Maps desde la configuración estándar de Odoo."""
-        return self.env['ir.config_parameter'].sudo().get_param('google_maps_api_key', default='')
-
-    # ----------------------------------------
-    # Sobreescritura de métodos de creación/modificación
-    # ----------------------------------------
+                except Exception as e:
+                    _logger.error(f"Error en la geolocalización: {e}")
+                    record.latitude = 0.0
+                    record.longitude = 0.0
 
     @api.model
     def create(self, vals):
-        """
-        Sobreescribe el método create para calcular latitud/longitud automáticamente 
-        cuando se crea un registro de garantía con dirección.
-        """
-        if 'calle' in vals or 'numero' in vals or 'ciudad' in vals or 'cp' in vals or 'country_id' in vals:
-            # Construir dirección antes de la geocodificación
-            address = f"{vals.get('calle', '')} {vals.get('numero', '')}, {vals.get('ciudad', '')}, {vals.get('cp', '')}, {self.env['res.country'].browse(vals.get('country_id')).name or ''}"
-            lat, lng = self._google_geocode(address)
-            vals['latitude'] = lat
-            vals['longitude'] = lng
-
-        return super(Garantias, self).create(vals)
+        """Sobrescribe create para calcular latitud y longitud al crear el registro."""
+        record = super(Garantias, self).create(vals)
+        record.geo_localize()
+        return record
 
     def write(self, vals):
-        """
-        Sobreescribe el método write para actualizar latitud/longitud 
-        automáticamente cuando se actualiza la dirección de una garantía.
-        """
-        if 'calle' in vals or 'numero' in vals or 'ciudad' in vals or 'cp' in vals or 'country_id' in vals:
-            for record in self:
-                address = f"{vals.get('calle', record.calle)} {vals.get('numero', record.numero)}, {vals.get('ciudad', record.ciudad)}, {vals.get('cp', record.cp)}, {record.country_id.name}"
-                lat, lng = self._google_geocode(address)
-                vals['latitude'] = lat
-                vals['longitude'] = lng
+        """Sobrescribe write para actualizar latitud y longitud si se modifica la ubicación."""
+        result = super(Garantias, self).write(vals)
+        if 'calle' in vals or 'ciudad' in vals or 'cp' in vals or 'country_id' in vals:
+            self.geo_localize()
+        return result
 
-        return super(Garantias, self).write(vals)
+    def action_geo_localize(self):
+        """Acción para el botón de geolocalización."""
+        self.geo_localize()
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'message': _('Ubicación actualizada correctamente.'),
+                'type': 'rainbow_man',
+            }
+        }

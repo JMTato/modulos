@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="garantias.GarantiasMapView">
+        <div>Mapa de Garantías cargado correctamente</div>
+        <div id="garantias_map" class="o_garantias_map" style="width:100%; height:500px;"></div>
+    </t>
+</templates>
