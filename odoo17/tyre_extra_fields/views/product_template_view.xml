@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_product_form_inherit_tyre_extra_fields" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.tyre.extra.fields</field>
+        <field name="model">product.template</field>
+        <!-- Se hereda la vista del formulario de producto. Ajusta el ref si es necesario -->
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Ubica los campos donde desees. En este ejemplo se añaden después del grupo 'sales'. -->
+            <xpath expr="//group[@name='sales']" position="after">
+                <group string="Datos adicionales">
+                    <field name="eficiencia_combustible"/>
+                    <field name="agarre_mojado"/>
+                    <field name="ruido"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
