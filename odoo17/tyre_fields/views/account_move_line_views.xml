@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Personalización de la vista de árbol de líneas de factura -->
+    <record id="view_invoice_line_tree_inherit" model="ir.ui.view">
+        <field name="name">account.move.line.tree.tyre.fields</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <!-- Inserta los campos después del campo 'name' -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="eficiencia_combustible" string="Eficiencia"/>
+                <field name="agarre_mojado" string="Agarre"/>
+                <field name="ruido" string="Ruido"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Personalización de la vista de formulario de líneas de factura -->
+    <record id="view_invoice_line_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.line.form.tyre.fields</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_form"/>
+        <field name="arch" type="xml">
+            <!-- Inserta los campos después del campo 'name' en el formulario -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="eficiencia_combustible" string="Eficiencia"/>
+                <field name="agarre_mojado" string="Agarre"/>
+                <field name="ruido" string="Ruido"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

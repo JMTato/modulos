@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+        <!-- Encabezados de las nuevas columnas -->
+        <xpath expr="//table[contains(@class, 'o_main_table')]/thead/tr/th[@name='th_quantity']" position="before">
+            <th class="text-center" style="width: 25px;">
+                <img src="/tyre_fields/static/img/eficiencia.png" style="max-width: 25px; max-height: 25px;" alt="Eficiencia"/>
+            </th>
+            <th class="text-center" style="width: 25px;">
+                <img src="/tyre_fields/static/img/agarre.png" style="max-width: 25px; max-height: 25px;" alt="Agarre Mojado"/>
+            </th>
+            <th class="text-center" style="width: 25px;">
+                <img src="/tyre_fields/static/img/ruido.png" style="max-width: 25px; max-height: 25px;" alt="Ruido"/>
+            </th>
+        </xpath>
+
+        <!-- Celdas con los datos en las líneas del pedido -->
+        <xpath expr="//table[contains(@class, 'o_main_table')]/tbody/t/tr/t/td[@name='td_quantity']" position="before">
+            <td class="text-center">
+                <span t-esc="line.eficiencia_combustible or ' '"/>
+            </td>
+            <td class="text-center">
+                <span t-esc="line.agarre_mojado or ' '"/>
+            </td>
+            <td class="text-center">
+                <span t-esc="line.ruido or ' '"/>
+            </td>
+        </xpath>
+    </template>
+</odoo>

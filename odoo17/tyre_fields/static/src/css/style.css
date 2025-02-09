@@ -1,0 +1,17 @@
+.tyre-field-header {
+    width: 12px;
+    height: 12px;
+    text-align: center;
+}
+
+.tyre-field-header img {
+    max-width: 12px;
+    max-height: 12px;
+}
+
+.tyre-field-column {
+    width: 12px !important;
+    min-width: 12px !important;
+    max-width: 12px !important;
+    text-align: center;
+}

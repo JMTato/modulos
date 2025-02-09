@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_inherit_tyre_fields" model="ir.ui.view">
+        <field name="name">account.move.form.tyre.fields</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
+                <field name="eficiencia_combustible" string="Eficiencia" editable="1"/>
+                <field name="agarre_mojado" string="Agarre" editable="1"/>
+                <field name="ruido" string="Ruido" editable="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
