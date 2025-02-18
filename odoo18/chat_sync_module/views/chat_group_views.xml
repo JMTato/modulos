@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_chat_group_form" model="ir.ui.view">
+        <field name="name">chat.group.form</field>
+        <field name="model">chat.group</field>
+        <field name="arch" type="xml">
+            <form string="Grupo de Chat">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="user_ids" widget="many2many_tags"/>
+                    </group>
+                    <group string="Configuración del Odoo del Cliente">
+                        <field name="client_odoo_url"/>
+                        <field name="client_db"/>
+                        <field name="client_username"/>
+                        <field name="client_password" password="True"/>
+                        <field name="client_version" readonly="True"/>
+                    </group>
+                    <group>
+                        <button name="create_client_chat_group" string="Crear Grupo en Cliente" type="object"/>
+                        <button name="send_message_to_client_chat" string="Enviar Mensaje" type="object"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

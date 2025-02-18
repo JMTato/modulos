@@ -1,0 +1,13 @@
+<odoo>
+    <menuitem id="menu_chat_sync_root" name="Chats" sequence="10"/>
+    <menuitem id="menu_chat_sync_groups" name="Grupos de Chat" parent="menu_chat_sync_root" action="action_chat_group"/>
+    
+    <record id="action_chat_group" model="ir.actions.act_window">
+        <field name="name">Grupos de Chat</field>
+        <field name="res_model">chat.group</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>Gestión de grupos de chat sincronizados con clientes.</p>
+        </field>
+    </record>
+</odoo>
