@@ -1,0 +1,6 @@
+<odoo>
+  <record id="group_internal_calendar_filter" model="res.groups">
+    <field name="name">Solo ver usuarios internos en calendario</field>
+    <field name="category_id" ref="base.module_category_hidden"/>
+  </record>
+</odoo>
