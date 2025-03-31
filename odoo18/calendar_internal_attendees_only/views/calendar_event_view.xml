@@ -1,14 +1,12 @@
-<odoo>
-    <record id="view_calendar_event_form_restricted" model="ir.ui.view">
-        <field name="name">calendar.event.form.restricted</field>
-        <field name="model">calendar.event</field>
-        <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
-        <field name="groups_id" eval="[(4, ref('calendar_internal_attendees_only.group_calendar_internal_attendees_only'))]"/>
-        <field name="arch" type="xml">
-            <field name="partner_ids" position="attributes">
-                <attribute name="widget">many2many_tags</attribute>
-                <attribute name="domain">[('user_ids', '!=', False)]</attribute>
-            </field>
-        </field>
-    </record>
-</odoo>
+<record id="view_calendar_event_form_restricted" model="ir.ui.view">
+    <field name="name">calendar.event.form.restricted</field>
+    <field name="model">calendar.event</field>
+    <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='partner_ids']" position="attributes">
+            <attribute name="widget">many2many_tags</attribute>
+            <attribute name="domain">[('user_ids', '!=', False)]</attribute>
+            <attribute name="groups">calendar_internal_attendees_only.group_calendar_internal_attendees_only</attribute>
+        </xpath>
+    </field>
+</record>
