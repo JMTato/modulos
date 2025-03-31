@@ -1,0 +1,8 @@
+<odoo>
+  <record id="rule_only_internal_user_partners" model="ir.rule">
+    <field name="name">Solo ver partners de usuarios internos</field>
+    <field name="model_id" ref="base.model_res_partner"/>
+    <field name="domain_force">[('user_ids','!=',False), ('user_ids.share','=',False)]</field>
+    <field name="groups" eval="[(4, ref('north_calendar.group_internal_calendar_filter'))]"/>
+  </record>
+</odoo>

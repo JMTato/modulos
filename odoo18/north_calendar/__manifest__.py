@@ -14,20 +14,24 @@ Características:
 - Solo los usuarios que pertenezcan a este grupo verán filtrado el campo `partner_ids`.
 - El filtro aplicado muestra únicamente partners vinculados a usuarios internos (`res.users`) que no sean usuarios compartidos (`share=False`).
 - No afecta a otros usuarios que no estén en el grupo.
+- Se incluye una extensión del componente de calendario (sidebar) para filtrar los asistentes visibles.
 
 Uso:
 ----
 - Instalar el módulo.
 - Asignar el grupo "Solo ver usuarios internos en calendario" a los usuarios deseados.
 - Al crear o editar un evento de calendario, el campo `partner_ids` solo mostrará usuarios internos.
+- En la vista de calendario, el filtro lateral de asistentes también mostrará solo usuarios internos para quienes tengan el grupo asignado.
 """,
     "category": "Calendar",
     "author": "Tu Nombre",
     "depends": ["calendar"],
     "data": [
         "security/north_calendar_groups.xml",
-        "views/calendar_event_view.xml"
+        "security/north_calendar_partner_rule.xml",
+        "views/calendar_event_view.xml",
     ],
+
     "installable": True,
     "application": False
 }
